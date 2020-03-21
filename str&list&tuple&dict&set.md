@@ -392,7 +392,7 @@ set本身是可变的。
 3. frozenset类型是不可变的set。
 ***
 
-###Set Methods
+### Set Methods
 #### clear()
 #### copy()
 #### add(*elem*)
@@ -411,5 +411,5 @@ isdisjoint(*other*) ||判断是否有交集
 <br>issubset(*other*)</br><br>issuperset(*other*)</br>	|<br>set <= other</br><br>set >= other</br><br>set < other</br><br>set > other</br>	|判断是否为子集
 <br>union(**others*)</br><br>update(**others*)</br>|	<br>set \| other \| ...<br> <br>set \|= other \| ...</br>	|返回所有集合的并集。
 <br>intersection(**others*)</br><br>intersection_update(**others*)</br>	|<br>set & other & ... </br>   <br>set &= other & ...</br>	|返回各个集合的交集只保留该集合和其他集合的交集元素。返回新的集合。
-<br>difference(**others*)</br><br>difference_update(**others*)</br>	|<br>set - other - ...</br>   <br>set -= other | ...</br>	|返回该集合中存在但其他集合中不存在的差集。移除其他集合中存在的元素，返回新的集合。
+<br>difference(**others*)</br><br>difference_update(**others*)</br>	|<br>set - other - ...</br>   <br>set -= other \| ...</br> |返回该集合中存在但其他集合中不存在的差集。移除其他集合中存在的元素，返回新的集合。
 <br>symmetric_difference(*other*)</br><br>symmetric_difference_update(*other*)</br>	|<br>set ^ other</br> <br>set ^= other</br>	|返回该集合及其他集合中独有的元素。返回一个集合，只保留其他集合中独有的元素。
