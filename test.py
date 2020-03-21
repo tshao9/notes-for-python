@@ -1,2 +1,1 @@
-s = 'sjefiJIEJRF'
-s.find('fi')
+game = {'MMO':'ff14','单机':'巫师3'}
