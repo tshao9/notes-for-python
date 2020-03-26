@@ -11,12 +11,12 @@ a-c|d-h|h-m|m-r|r-z
 <br>**bin()**</br><br>返回一个int的二进制字符串<br>`>>>bin(10)`</br><br>`'0b1010'`</br></br>|<br>**enumerate(sequence, [start=0])**</br><br>将一个可遍历的数据对象组成为一个索引序列，下标从start开始<br>`>>>l = ['a', 'b']`</br><br>`>>>list(enumerate(l, start=1))`</br><br>`[(1, 'a'), (2, 'b')]`</br></br>|<br>**input()**</br><br>输入</br>|<br>**oct()**</br><br>返回一个int的八进制字符串<br>`>>>oct(10)`</br><br>`'0o12'`</br></br>|<br>**staticmethod()**</br><br></br>
 <br>**bool()**</br><br>返回数据的布尔类型</br>|<br>**eval(expression[, globals[, locals]])**</br><br>执行一个字符串表达式并返回表达式的值。globals 必须是一个字典对象。locals 可以是任何映射对象。</br>|<br>**int()**</br><br>将数据转换为int型</br>|<br>**open()**</br><br>打开一个文件</br>|<br>**str()**</br><br>返回对象的string格式</br>
 <br>**breakpoint()**</br><br></br>|<br>**exec()**</br><br>见下</br>|<br>**isinstance()**</br><br></br>|<br>**ord()**</br><br>返回一个字符对应的 ASCII 或者 Unicode 数值</br>|<br>**sum(iterable, /, start=0)**</br><br>求和</br>
-<br>**bytearray()**</br><br>返回一个新字节数组，元素可变</br>|<br>**filter()**</br><br></br>|<br>**issubclass()**</br><br></br>|<br>**pow(x, y[, z])**</br>返回`pow(x,y) %z`<br></br>|<br>**super()**</br><br></br>
+<br>**bytearray()**</br><br>返回一个新字节数组，元素可变</br>|<br>**filter()**</br><br>见下</br>|<br>**issubclass()**</br><br></br>|<br>**pow(x, y[, z])**</br>返回`pow(x,y) %z`<br></br>|<br>**super()**</br><br></br>
 <br>**bytes()**</br><br>返回一个不可变的bytes对象。</br>|<br>**float()**</br><br>将数据转换为float型</br>|<br>**iter()**</br><br>生成迭代器</br>|<br>**print()**</br><br>输出</br>|<br>**tuple()**</br><br></br>
 <br>**callable()**</br><br>检查对象是否可调用</br>|<br>**format()**</br><br>见下</br>|<br>**len()**</br><br>返回对象的长度</br>|<br>**property()**</br><br></br>|<br>**type()**</br><br>见下</br>
 <br>**chr()**</br><br>返回一个ASCII 或者 Unicode 数值对应的字符</br>|<br>**frozenset()**</br><br>创建一个不可变set</br>|<br>**list()**</br><br></br>|<br>**range()**</br><br>创建一个整数列表</br>|<br>**vars()**</br><br></br>
 <br>**classmethod()**</br><br></br>|<br>**getattr()**</br><br></br>|<br>**locals()**</br><br>以字典的类型返回当前位置全部局部变量</br>|<br>**repr()**</br><br>原样输出字符串<br>`>>>s = 'RUNOOB'`</br><br>`>>> repr(s)`</br><br>`"'RUNOOB'"`</br></br>|<br>**zip()**</br><br>见下</br>
-<br>**compile()**</br><br>见下</br>|<br>**globals()**</br><br>以字典的类型返回当前位置全部全局变量</br>|<br>**map()**</br><br></br>|<br>**reversed()**</br><br>将一个可翻转对象进行翻转,返回一个迭代器</br>|<br>**__import__()**</br><br></br>
+<br>**compile()**</br><br>见下</br>|<br>**globals()**</br><br>以字典的类型返回当前位置全部全局变量</br>|<br>**map()**</br><br>见下</br>|<br>**reversed()**</br><br>将一个可翻转对象进行翻转,返回一个迭代器</br>|<br>**\_\_import__()**</br><br></br>
 <br>**complex()**</br><br>见下</br>|<br>**hasattr()**</br><br></br>|<br>**max()**</br><br>返回给定参数或iterable的最大值</br>|<br>**round(x.[,n])**</br><br>见下</br>|
 
 </i>
@@ -107,6 +107,20 @@ func()
 60
 33
 34
+```
+***
+
+### filter()
+#### *filter(function, iterable)*
+过滤序列，过滤掉不符合条件的元素，返回一个迭代器对象，如果要转换为列表，可以使用 list() 来转换。
+接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。
+```python
+def is_odd(n):
+    return n % 2 == 1
+ 
+tmplist = filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+newlist = list(tmplist)
+print(newlist)
 ```
 ***
 ### format()
@@ -201,6 +215,25 @@ print "相加后的值为 : ", sum( 20, 20 )
 fn = lambda *args: max(args)
 ```
 ***
+### map()
+#### *map(function, iterable, ...)*
+根据提供的函数对指定序列做映射，返回一个迭代器。
+
+第一个参数 function 以参数序列中的每一个元素调用 function 函数，返回包含每次 function 函数返回值的新列表。
+```python
+>>>def square(x) :            # 计算平方数
+...     return x ** 2
+... 
+>>> map(square, [1,2,3,4,5])   # 计算列表各个元素的平方
+[1, 4, 9, 16, 25]
+>>> map(lambda x: x ** 2, [1, 2, 3, 4, 5])  # 使用 lambda 匿名函数
+[1, 4, 9, 16, 25]
+ 
+# 提供了两个列表，对相同位置的列表数据进行相加。
+>>> map(lambda x, y: x + y, [1, 3, 5, 7], [2, 4, 6, 8, 10])
+[3, 7, 11, 15]
+```
+***
 ### round()
 #### *round(x,[,n])*
 返回一个浮点数的四舍五入值，默认到小数点后n位。n默认为0，即返回一个int型。  
@@ -224,6 +257,7 @@ sorted() 函数对所有可迭代的对象进行排序操作。
 > sort 是应用在 list 上的方法，sorted 可以对所有可迭代的对象进行排序操作。
 > list 的 sort 方法返回的是对已经存在的列表进行操作，而内建函数 sorted 方法返回的是一个新的 list，而不是在原来的基础上进行的操作。
 </i>
+
 ```python
 #只利用key进行倒序排序
 >>> example_list = [5, 0, 6, 1, 2, 7, 3, 4]
