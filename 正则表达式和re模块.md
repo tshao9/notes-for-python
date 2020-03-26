@@ -86,3 +86,256 @@ x\|y	|匹配 x 或 y。例如，'z\|food' 能匹配 "z" 或 "food"。'(z\|f)ood'
 \\\\n	|\n	 |True	|转义\之后变成\\，即可匹配
 `"\\\\n"`|`'\\n'`	 |True	|如果在python中，字符串中的'\'也需要转义，所以每一个字符串'\'又需要转义一次
 `r'\\n'`	|`r'\n'`	 |True	|在字符串之前加r，让整个字符串不转义
+
+***
+
+### re模块
+#### 正则表达式修饰符 - 可选标志
+
+修饰符	|描述
+-|-
+re.I	|使匹配对大小写不敏感
+re.L	|做本地化识别（locale-aware）匹配
+re.M	|多行匹配，影响 ^ 和 $
+re.S	|使 . 匹配包括换行在内的所有字符
+re.U	|根据Unicode字符集解析字符。这个标志影响 \w, \W, \b, \B.
+re.X	|该标志通过给予你更灵活的格式以便你将正则表达式写得更易于理解。
+***
+### 匹配对象的方法
+#### group()
+可以使用group(*num*) 或 groups() 匹配对象函数来获取匹配表达式。
+
+匹配对象方法	|描述
+-|-
+group(*num=0*)	|group(1) 列出第一个括号匹配部分，group(2) 列出第二个括号匹配部分，group(3) 列出第三个括号匹配部分。
+groups()	|匹配正则表达式整体结果
+
+#### start()
+用于获取分组匹配的子串在整个字符串中的起始位置（子串第一个字符的索引），参数默认值为 0。
+
+#### end()
+用于获取分组匹配的子串在整个字符串中的结束位置（子串最后一个字符的索引+1），参数默认值为 0。
+
+#### span()
+返回 (start(), end())。
+
+***
+### 查找方法
+
+#### findall()
+在字符串中找到正则表达式所匹配的所有子串，并返回一个列表，如果没有找到匹配的，则返回空列表。
+#### *findall(string[, pos[, endpos]])*
+> *string* : 待匹配的字符串。
+> *pos* : 可选参数，指定字符串的起始位置，默认为 0。
+> *endpos* : 可选参数，指定字符串的结束位置，默认为字符串的长度。
+```python
+#查找字符串中所有数字
+import re
+ 
+pattern = re.compile(r'\d+')   # 查找数字
+result1 = pattern.findall('runoob 123 google 456')
+result2 = pattern.findall('run88oob123google456', 0, 10)
+ 
+print(result1)
+print(result2)
+
+#输出结果
+```
+#### *re.findall(pattern, string, flags=0)*
+> *pattern*	匹配的正则表达式
+> *string*	要匹配的字符串。
+> *flags*	标志位
+```python
+import re
+
+ret = re.findall('\d+','asef2374aer22')
+print(ret)
+
+#输出结果
+['2374', '22']
+```
+#### finditer()
+#### *re.finditer(pattern, string, flags=0)*
+和 findall 类似，在字符串中找到所有正则表达式**匹配结果**，并把它们作为一个迭代器返回。**减少空间复杂度**
+```python
+import re
+ 
+it = re.finditer(r"\d+","12a32bc43jf3") 
+for match in it: 
+    print (match.group() )
+
+#输出结果
+12 
+32 
+43 
+3
+```
+
+#### search()
+#### *re.search(pattern, string, flags=0)*
+匹配成功re.search方法返回一个匹配的对象，否则返回None。
+```python
+import re
+ 
+line = "Cats are smarter than dogs";
+ 
+searchObj = re.search( r'(.*) are (.*?) .*', line, re.M|re.I)
+ 
+if searchObj:
+   print "searchObj.group() : ", searchObj.group()
+   print "searchObj.group(1) : ", searchObj.group(1)
+   print "searchObj.group(2) : ", searchObj.group(2)
+else:
+   print "Nothing found!!"
+
+#输出结果:
+searchObj.group() :  Cats are smarter than dogs
+searchObj.group(1) :  Cats
+searchObj.group(2) :  smarter
+```
+
+#### match()
+#### *re.match(pattern, string, flags=0)*
+尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match()就返回none。  
+相当于自带 `^` 的search()方法。
+
+***
+
+### 更改（替换/切割）
+#### split()
+#### *re.split(pattern, string[, maxsplit=0, flags=0])*
+按照能够匹配的子串将字符串分割后返回列表。
+> *maxsplit* 分隔次数，maxsplit=1 分 隔一次，默认为 0，不限制次数。
+```python
+>>>import re
+>>> re.split('\W+', 'runoob, runoob, runoob.')
+['runoob', 'runoob', 'runoob', '']
+>>> re.split('(\W+)', ' runoob, runoob, runoob.') 
+['', ' ', 'runoob', ', ', 'runoob', ', ', 'runoob', '.', '']
+>>> re.split('\W+', ' runoob, runoob, runoob.', 1) 
+['', 'runoob, runoob, runoob.']
+ 
+>>> re.split('a*', 'hello world')   # 对于一个找不到匹配的字符串而言，split 不会对其作出分割
+['hello world']
+```
+
+#### sub()
+#### *re.sub(pattern, repl, string, count=0, flags=0)*
+替换字符串中的匹配项，返回一个新的字符串。
+> *pattern* : 正则中的模式字符串。
+> *repl* : 替换的字符串，也可为一个函数。
+> *string* : 要被查找替换的原始字符串。
+> *count* : 模式匹配后替换的最大次数，默认 0 表示替换所有的匹配。
+```python
+import re
+phone = "2004-959-559 # 这是一个国外电话号码"
+ 
+# 删除字符串中的 Python注释 
+num = re.sub(r'#.*$', "", phone)
+print("电话号码是: ", num)
+# 删除非数字(-)的字符串 
+num = re.sub(r'\D', "", phone)
+print("电话号码是 : ", num)  
+```
+
+#### subn()
+#### *re.subn(pattern, repl, string, count=0, flags=0)*
+行为与 sub() 相同，但是返回一个元组 (字符串, 替换次数)。
+
+#### compile()
+#### *re.compile(pattern[, flags])*
+将正则表达式的样式编译为一个 正则表达式对象 （正则对象），可以用于匹配。**减少时间复杂度**
+```python
+>>>import re
+>>> pattern = re.compile(r'\d+')                    # 用于匹配至少一个数字
+>>> m = pattern.match('one12twothree34four')        # 查找头部，没有匹配
+>>> print m
+None
+>>> m = pattern.match('one12twothree34four', 2, 10) # 从'e'的位置开始匹配，没有匹配
+>>> print m
+None
+>>> m = pattern.match('one12twothree34four', 3, 10) # 从'1'的位置开始匹配，正好匹配
+>>> print m                                         # 返回一个 Match 对象
+<_sre.SRE_Match object at 0x10a42aac0>
+>>> m.group(0)   # 可省略 0
+'12'
+>>> m.start(0)   # 可省略 0
+3
+>>> m.end(0)     # 可省略 0
+5
+>>> m.span(0)    # 可省略 0
+(3, 5)
+```
+***
+### re模块和分组
+
+```python
+#通过分组获得真正想要的内容
+import re
+s = '<a>hellotsj</a>'
+ret = re.search('<(\w+)>(\w+)</(\w+)>',s)
+print('标签内容为:',ret.group(1)) #获取标签内容
+print('文本内容为:',ret.group(2)) #获取文本内容
+
+###输出内容为:
+标签内容为: a
+文本内容为: hellotsj
+```
+
+```python
+#在findall()方法中，按照正则表达式中内容进行匹配，但是优先显示的是分组中的内容，而不是整个匹配内容。
+>>> import re
+>>> s = '<a>hellotsj</a>'
+>>> ret = re.findall('>(\w+)<',s)
+>>> ret
+['hellotsj']
+>>> ret = re.findall('(>)(\w+)<',s)
+>>> ret
+[('>', 'hellotsj')]
+```
+
+```python
+#取消分组优先只需要将分组写为(:? )
+>>> import re
+>>> re.findall('\d+(\.\d+)?','1.234*4.3') #匹配小数
+['.234', '.3']
+>>> re.findall('\d+(?:\.\d+)?','1.234*4.3') #取消分组优先，获得正确匹配结果。
+['1.234', '4.3']
+```
+
+```python
+#split()方法中，分组内的内容被保留
+>>>import re
+>>> re.split('(\W+)', ' runoob, runoob, runoob.') 
+['', ' ', 'runoob', ', ', 'runoob', ', ', 'runoob', '.', '']
+
+#取消分组优先的方法同样有效
+>>> re.split('(?:\W+)', ' runoob, runoob, runoob.')
+['', 'runoob', 'runoob', 'runoob', '']
+```
+
+```python
+#分组命名 (?P<>)
+>>> import re
+>>> ret = re.search('>(?P<content>\w+)<','<a>hellotsj</a>')
+>>> ret.group('content')
+'hellotsj'
+
+#要求标签内容一致才匹配
+>>> re.search('<(?P<tab>\w+)>(\w+)</(?P=tab)>','<a>hellotsj</a>').group()
+'<a>hellotsj</a>'
+```
+
+***
+### 正则表达式技巧
+#### 匹配整数
+```python
+import re
+
+ret=re.findall(r"\d+","1-2*(60+(-40.35/5)-(-4*3))")
+print(ret) #['1', '2', '60', '40', '35', '5', '4', '3']
+ret=re.findall(r"-?\d+\.\d*|(-?\d+)","1-2*(60+(-40.35/5)-(-4*3))")
+print(ret) #['1', '-2', '60', '', '5', '-4', '3']
+ret.remove("")
+print(ret) #['1', '-2', '60', '5', '-4', '3']
+```
